@@ -112,7 +112,7 @@ This will execute the code for the dataset number 17 in the _dataset.csv_, with 
 The results are store in the Reports folder
 
 ## Video Demonstration
-Click [here]() to watch a video that demonstrate how to run this code
+Click [here](https://youtu.be/UZEOs-sXAf0) to watch a video that demonstrate how to run this code
 
 
 ## Acknowledgment
@@ -143,4 +143,3 @@ This study is financed in part by the Coordenação de Aperfeiçoamento de Pesso
 Please contact me: elainececiliagatto@gmail.com
 
 # Thanks
-
