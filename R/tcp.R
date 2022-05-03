@@ -251,70 +251,24 @@ write.csv(result_set, "Runtime.csv")
 print(timeTCP)
 cat("\n")
 
-str2 = paste("rm -rf ", diretorios$folderDatasets, sep="")
+str2 = paste("cp -r ", diretorios$folderTest ,
+             " ", diretorios$folderReports, sep="")
 print(system(str2))
 
-
-
-cat("\n\n###################################################################")
-cat("\n# ====> TCP-TR-H: COMPRESS TEST RESULTS                             #")
-cat("\n#####################################################################\n\n")
-str = paste(" tar -zcf ", diretorios$folderTest ,"/test.tar.gz ",
-            diretorios$folderReports, sep="")
-print(system(str))
-
-
-str2 = paste("cp ", diretorios$folderTest ,"/test.tar.gz ", diretorios$folderReports, sep="")
+str2 = paste("cp -r ", diretorios$folderValidate ,
+             " ", diretorios$folderReports, sep="")
 print(system(str2))
 
-str2 = paste("rm -rf ", diretorios$folderTest, sep="")
-print(system(str2))
+str = "~/TCP-TR-H/Reports/"
+if(dir.exists(str)==FALSE){dir.create(str)}
 
-
-
-cat("\n\n###################################################################")
-cat("\n# ====> TCP-TR-H: COMPRESS VALIDATE RESULTS                             #")
-cat("\n#####################################################################\n\n")
-str = paste(" tar -zcf ", diretorios$folderValidate ,"/test.tar.gz ",
-            diretorios$folderReports, sep="")
-print(system(str))
-
-str2 = paste("cp ", diretorios$folderValidate ,"/test.tar.gz ",
-             diretorios$folderReports, sep="")
-print(system(str2))
-
-str2 = paste("rm -rf ", diretorios$folderValidate, sep="")
-print(system(str2))
-
-
-#################################################################
-str2 = paste("rm -rf ", diretorios$folderCommunities, sep="")
-print(system(str2))
-
-str2 = paste("rm -rf ", diretorios$folderPartitions, sep="")
-print(system(str2))
-################################################################
-
-
-
-cat("\n\n###################################################################")
-cat("\n# ====> TCP-TR-NH: COPY TO HOME                                     #")
-cat("\n#####################################################################\n\n")
-
-str0 = "~/TCP-TR-H/Reports"
-if(dir.exists(str0)==FALSE){dir.create(str0)}
-
-str1 = paste(str0, "/", similarity, sep="")
+str1 = paste(str, "/", dataset_name, sep="")
 if(dir.exists(str1)==FALSE){dir.create(str1)}
 
-str2 = paste(str1, "/TR-H", sep="")
-if(dir.exists(str2)==FALSE){dir.create(str2)}
+str2 = paste("cp -r ", diretorios$folderReports ,
+             " ", str1, sep="")
+print(system(str2))
 
-str3 = paste(str2, "/", dataset_name, sep="")
-if(dir.exists(str3)==FALSE){dir.create(str3)}
-
-str4 = paste("cp -r ", diretorios$folderReports, "/* ", str3, sep="")
-print(system(str4))
 
 cat("\n\n###################################################################")
 cat("\n# ====> TCP-TR-H: CLEAN                                            #")

@@ -84,6 +84,9 @@ verifyingTresholds3 <- function(ds, dataset_name, number_dataset,
   setwd(diretorios$folderPartitions)
   write.csv(data.frame(escolhidoFinal), "escolhidos.csv")
 
+  setwd(diretorios$folderValidate)
+  write.csv(data.frame(escolhidoFinal), "escolhidos.csv")
+
   cat("\n")
   print(escolhidoFinal)
   cat("\n")
