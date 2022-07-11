@@ -1,5 +1,6 @@
-# TCP-TR-H
-This code is part of my doctoral research at PPG-CC/DC/UFSCar. Test Hybrid Partitions - Sparsification Treshold - Hierarchical Comunity Detection Methods.
+# Test Community Partition Treshold Hierarchical with Clus
+
+This code is part of my doctoral research at PPG-CC/DC/UFSCar. Test Hybrid Partitions + Threshold Sparsification + Hierarchical Comunity Detection Methods + Clus Classifier
 
 ## How to cite 
 @misc{Gatto2021, author = {Gatto, E. C.}, title = {Test Hybrid Partitions using Communities Detection Methods for Multilabell Classification}, year = {2022}, publisher = {GitHub}, journal = {GitHub repository}, howpublished = {\url{https://github.com/cissagatto/TCP-TR-H}}}
