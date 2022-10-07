@@ -49,11 +49,11 @@ n = nrow(datasets)
 ###############################################################################
 # CREATING FOLDER TO SAVE CONFIG FILES                                        #
 ###############################################################################
-# "~/TCP-KNN-H-Clus/tcp-clus-jobs"
+# "~/TCP-KNN-H-Clus/jobs"
 FolderJob = paste(FolderRoot, "/jobs", sep = "")
 if (dir.exists(FolderJob) == FALSE) {dir.create(FolderJob)}
 
-# "~/TCP-KNN-H-Clus/tcp-clus-config-files"
+# "~/TCP-KNN-H-Clus/config-files"
 FolderCF = paste(FolderRoot, "/config-files", sep="")
 
 similarity.name = c("jaccard", "rogers")
@@ -69,21 +69,21 @@ validation.nick = c("s", "ma", "mi")
 s = 1
 while(s<=length(similarity.name)){
 
-  #  "~/TCP-KNN-H-Clustcp-clus-jobs/jaccard"
+  #  "~/TCP-KNN-H-Clus/jobs/jaccard"
   FolderSimJob = paste(FolderJob, "/", similarity.name[s], sep="")
   if(dir.exists(FolderSimJob)==FALSE){dir.create(FolderSimJob)}
 
-  # "~/TCP-KNN-H-Clus/tcp-clus-config-files/jaccard"
+  # "~/TCP-KNN-H-Clus/config-files/jaccard"
   FolderSimCF = paste(FolderCF, "/", similarity.name[s], sep="")
 
   v = 1
   while(v<=length(validation)){
 
-    #  "~/TCP-KNN-H-Clustcp-clus-jobs/jaccard"
+    #  "~/TCP-KNN-H-Clus/jobs/jaccard"
     FolderVal = paste(FolderSimJob, "/", validation.name[v], sep="")
     if(dir.exists(FolderVal)==FALSE){dir.create(FolderVal)}
 
-    # "~/TCP-KNN-H-Clus/tcp-clus-config-files/jaccard/Silhouette"
+    # "~/TCP-KNN-H-Clus/config-files/jaccard/Silhouette"
     FolderSimCFVal = paste(FolderSimCF, "/", validation.name[v], sep="")
 
     d = 1
@@ -92,24 +92,28 @@ while(s<=length(similarity.name)){
       # select the specific dataset
       ds = datasets[d, ]
 
-      # print dataset name
-      cat("\n\n===============================================")
-      cat("\nSimilarity \t", similarity.name[s])
-      cat("\nValidation \t", validation.name[v])
-      cat("\nDataset \t", ds$Name)
-
-      # "ekjs-3s-bbc1000"
+      # "ctjs-3s-bbc1000"
       name = paste("ct",  similarity.nick[s],
-                   validation.nick[s], "-", ds$Name, sep="")
+                   validation.nick[v], "-", ds$Name, sep="")
 
-      # "/scratch/ekjs-3s-bbc1000"
+      # "/scratch/ctjs-3s-bbc1000"
       folder_name = paste("/scratch/", name , sep = "")
 
-      # "~/TCP-KNN-H-ECC/config-files/jaccard/Silhouette/ekjs-3s-bbc1000.csv"
+      # "~/TCP-KNN-H-ECC/config-files/jaccard/Silhouette/ctjs-3s-bbc1000.csv"
       config_name = paste(FolderSimCFVal, "/", name, ".csv", sep="")
 
-      # "~/TCP-KNN-H-ECC/jobs/jaccard/Silhouette/ekjs-3s-bbc1000.sh"
+      # "~/TCP-KNN-H-ECC/jobs/jaccard/Silhouette/ctjs-3s-bbc1000.sh"
       sh_name = paste(FolderVal, "/", name, ".sh", sep = "")
+
+      cat("\n\n#===============================================")
+      cat("\n# Similarity \t\t|", similarity.name[s])
+      cat("\n# Validation \t\t|", validation.name[v])
+      cat("\n# Dataset \t\t|", ds$Name)
+      cat("\n# Name \t\t\t|", name)
+      cat("\n# Folder Name \t\t|", folder_name)
+      cat("\n# Config Name \t\t|", config_name)
+      cat("\n# SH Name \t\t|", sh_name)
+      cat("\n===============================================\n\n")
 
       # start writing
       output.file <- file(sh_name, "wb")

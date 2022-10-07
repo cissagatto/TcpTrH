@@ -92,7 +92,7 @@ while(s<=length(similarity.name)){
 
       # "ekjs-3s-bbc1000"
       name = paste("ct",  similarity.nick[s],
-                   validation.nick[s], "-", ds$Name, sep="")
+                   validation.nick[v], "-", ds$Name, sep="")
 
       # "/scratch/ekjs-3s-bbc1000"
       folder_name = paste("/scratch/", name , sep = "")
