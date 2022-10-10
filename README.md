@@ -1,4 +1,4 @@
-# Test Community Partition Treshold Hierarchical with Clus
+# Test Partitions from Hierarchical Community Detection Methods with Treshold Sparcification and Clus Classifier
 
 This code is part of my doctoral research at PPG-CC/DC/UFSCar. Test Hybrid Partitions + Threshold Sparsification + Hierarchical Comunity Detection Methods + Clus Classifier
 
