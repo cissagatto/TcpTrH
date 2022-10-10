@@ -1,6 +1,6 @@
 Config, Value
 Dataset_Path, ~/TCP-TR-H-Clus/Datasets
-Temporary_Path, /dev/shm/ctjma-GpositiveGO
+Temporary_Path, /dev/shm/ctros-GpositiveGO
 Partitions_Path, ~/TCP-TR-H-Clus/Partitions/rogers
 Validation, 1
 Similarity, rogers

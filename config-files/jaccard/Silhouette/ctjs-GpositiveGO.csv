@@ -1,6 +1,6 @@
 Config, Value
 Dataset_Path, "~TCP-TR-H-Clus/Datasets"
-Temporary_Path, /dev/shm/ctjma-GpositiveGO
+Temporary_Path, /dev/shm/ctjs-GpositiveGO
 Partitions_Path, ~TCP-TR-H-Clus/Partitions/jaccard
 Validation, 1
 Similarity, jaccard

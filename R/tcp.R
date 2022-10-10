@@ -430,7 +430,7 @@ if(parameters$Validation==1){
   #   quit("yes")
   # }
   # cat("\n\n")
-
+  #
   # cat("\n\n#######################################################")
   # cat("\n# COPY TEST TO GOOGLE DRIVE                           #")
   # cat("\n#########################################################\n\n")
@@ -491,7 +491,7 @@ if(parameters$Validation==1){
   #   quit("yes")
   # }
   # cat("\n\n")
-
+  #
   # cat("\n\n#######################################################")
   # cat("\n# COPY TEST TO GOOGLE DRIVE                           #")
   # cat("\n#########################################################\n\n")
@@ -515,7 +515,7 @@ if(parameters$Validation==1){
   cat("\n# COPY #")
   cat("\n########\n\n")
   str2 = paste("cp -r ", diretorios$folderTestMiF1 ,
-               " ", diretorios$folderRepMaF1, sep="")
+               " ", diretorios$folderRepMiF1, sep="")
   print(system(str2))
 
   str2 = paste("cp -r ", diretorios$folderValMiF1 ,
