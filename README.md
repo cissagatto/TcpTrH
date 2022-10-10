@@ -5,63 +5,82 @@ This code is part of my doctoral research at PPG-CC/DC/UFSCar. Test Hybrid Parti
 ## How to cite 
 @misc{Gatto2021, author = {Gatto, E. C.}, title = {Test Hybrid Partitions using Communities Detection Methods for Multilabell Classification}, year = {2022}, publisher = {GitHub}, journal = {GitHub repository}, howpublished = {\url{https://github.com/cissagatto/TCP-TR-H}}}
 
-## Multi-Label Datasets (original)
-Click [here](https://cometa.ujaen.es/datasets/) to go to the cometa page
-
-## 10-Fold Cross Validation Multi-Label Datasets
-Click [here](https://www.4shared.com/s/dYpGZWzjQ) to download
-
-## Computed Partitions
-
-Jaccard, Cosine, Roger-Tanimoto and Russel-Rao: Click [here](https://www.4shared.com/s/dS5g0oJPb) to download
-
-Random: Click [here](https://www.4shared.com/s/dhsxOnLwH) to download
-
-## Conda Environment
-[download txt](https://www.4shared.com/s/fUCVTl13zea)
-
-[download yml](https://www.4shared.com/s/f8nOZyxj9iq)
-
-[download yaml](https://www.4shared.com/s/fk5Io4faLiq)
-
-To use conda environment to run this experiment, please consult [here](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html) 
-
-## Flowchart
-<img src="https://github.com/cissagatto/TCP-KNN-H/blob/main/comunity-paper-Page-1.png" width="300">
-
-## Scripts
-This source code consists of an R project for R Studio and the following R scripts:
-
-1. libraries.R
-2. utils.R
-3. validate.R
-4. testClus.R
-5. run.R
-6. tcp.R
-
-
 ## Preparing your experiment
 
-### Step-1
-This code is executed in X-fold cross-validation. First, you have to obtain the X-fold cross-validation files using this [code]( https://github.com/cissagatto/CrossValidationMultiLabel). All the instructions to use the code are in the Github. After that, put the results generated in the *Datasets* folder in this project as "tar.gz".
+### STEP 1
+A file called _datasets-original.csv_ must be in the *root project folder*. This file is used to read information about the datasets and they are used in the code. We have 90 multilabel datasets in this _.csv_ file. If you want to use another dataset, please, add the following information about the dataset in the file:
 
-### Step-2
-Confirms if the folder *utils* contains the following files: *Clus.jar*, *R_csv_2_arff.jar*, and *weka.jar*, and also the folder *lib* with *commons-math-1.0.jar*, *jgap.jar*, *weka.jar* and *Clus.jar.* Without these jars, the code not runs. 
 
-### Step-3
-A file called _datasets_2022.csv_ must be in the *root project* folder. This file is used to read information about the datasets and they are used in the code. All 74 datasets available in *Cometa* are in this file. If you want to use another dataset, please, add the following information about the dataset in the file:
+| Parameter    | Status    | Description                                           |
+|------------- |-----------|-------------------------------------------------------|
+| Id           | mandatory | Integer number to identify the dataset                |
+| Name         | mandatory | Dataset name (please follow the benchmark)            |
+| Domain       | optional  | Dataset domain                                        |
+| Instances    | mandatory | Total number of dataset instances                     |
+| Attributes   | mandatory | Total number of dataset attributes                    |
+| Labels       | mandatory | Total number of labels in the label space             |
+| Inputs       | mandatory | Total number of dataset input attributes              |
+| Cardinality  | optional  |                                                       |
+| Density      | optional  |                                                       |
+| Labelsets    | optional  |                                                       |
+| Single       | optional  |                                                       |
+| Max.freq     | optional  |                                                       |
+| Mean.IR      | optional  |                                                       | 
+| Scumble      | optional  |                                                       | 
+| TCS          | optional  |                                                       | 
+| AttStart     | mandatory | Column number where the attribute space begins*       | 
+| AttEnd       | mandatory | Column number where the attribute space ends          |
+| LabelStart   | mandatory | Column number where the label space begins            |
+| LabelEnd     | mandatory | Column number where the label space ends              |
+| Distinct     | optional  |                                                       |
+| xn           | mandatory | Value for Dimension X of the Kohonen map              | 
+| yn           | mandatory | Value for Dimension Y of the Kohonen map              |
+| gridn        | mandatory | X times Y value. Kohonen's map must be square         |
+| max.neigbors | mandatory | The maximum number of neighbors is given by LABELS -1 |
 
-_Id, Name, Domain, Labels, Instances, Attributes, Inputs, Labelsets, Single, Max freq, Card, Dens, MeanIR, Scumble, TCS, AttStart, AttEnd, LabelStart, LabelEnd, xn, yn, gridn_
 
-The *Id* of the dataset is a mandatory parameter in the command line to run all code. The fields are used in a lot of internal functions. Please, make sure that this information is available before running the code. *xn* and *yn* correspond to a dimension of the quadrangular map for kohonen, and *gridn* is (xn * yn). Example: xn = 4, yn = 4, gridn = 16.
+* Because it is the first column the number is always 1.
 
-### Step-4
-To run this code you will need the partitions generated from this [code](https://github.com/cissagatto/GeneratePartitionsCommunities). Please, read the instructions there.
+
+### STEP 2
+To run this experiment you need the _X-Fold Cross-Validation_ files and they must be compacted in **tar.gz** format. You can download these files, with 10-folds, ready for multiple multilabel dataset by clicking [here](https://www.4shared.com/folder/ypgzwzjq/datasets-cross-validation.html). For a new dataset, in addition to including it in the **datasets-original.csv** file, you must also run this code [here](https://github.com/cissagatto/crossvalidationmultilabel). In the repository in question you will find all the instructions needed to generate the files in the format required for this experiment. The **tar.gz** file can be placed on any folder on your computer or cluster. The absolute path of the file should be passed as a parameter in the configuration file that will be read by **macroF1.R** script. The dataset will be loaded from there.
+
+### STEP 3
+You need to have installed all the R packages required to execute this code on your machine. Check out which are needed in the file *libraries.R*. This code does not provide any type of automatic package installation! You can use the Conda environment that I created to perform this experiment. Below are the links to download the files.
+
+| [download txt](https://www.4shared.com/s/fUCVTl13zea) | [download yml](https://www.4shared.com/s/f8nOZyxj9iq) | [download yaml](https://www.4shared.com/s/fk5Io4faLiq) |
+
+Try to use the command below to extract the environment to your computer:
+
+```
+conda env create -file AmbienteTeste.yaml
+```
+
+See more information about Conda environments [here](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html) 
+
+### STEP 4
+You will need the previous partitions computed by [this code](https://github.com/cissagatto/Generate-Partitions-Communities). Put the "tar.gz" file in PARTITIONS folder in this project. Whithout it you cannot run this code.
+
+### STEP 5
+To run this code you will need a configuration file saved in *csv* format and with the following information:
+
+| Config            | Value                                                                     | 
+|-------------------|---------------------------------------------------------------------------| 
+| Dataset_Path      | Absolute path to the folder where the dataset's tar.gz is stored          |
+| Temporary_Path    | Absolute path to the folder where temporary processing will be performed* |
+| Partitions_Path   | Absolute path to the folder where partitions are store                    |
+| Similarity        | Choose which one to run: jaccard, rogers, etc.                            |
+| Dataset_Name      | Dataset name according to *datasets-original.csv* file                    |
+| Number_Dataset    | Dataset number according to *datasets-original.csv* file                  |
+| Number_Folds      | Number of folds used in cross validation                                  |
+| Number_Cores      | Number of cores for parallel processing                                   |
+
+* Use folders like */dev/shm*, *tmp* or *scratch* here.
+
+You can save configuration files wherever you want. The absolute path will be passed as a command line argument.
 
 ## Software Requirements
 This code was develop in RStudio Version 1.4.1106 © 2009-2021 RStudio, PBC "Tiger Daylily" (2389bc24, 2021-02-11) for Ubuntu Bionic Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) QtWebEngine/5.12.8 Chrome/69.0.3497.128 Safari/537.36. The R Language version was: R version 4.1.0 (2021-05-18) -- "Camp Pontanezen" Copyright (C) 2021 The R Foundation for Statistical Computing Platform: x86_64-pc-linux-gnu (64-bit).
-
-**Please, make sure all the dependencies are installed (verify libraries.R). This code does not provide any installation of the packages.**
 
 ## Hardware Requirements
 This code may or may not be executed in parallel, however, it is highly recommended that you run it in parallel. The number of cores can be configured via the command line (number_cores). If number_cores = 1 the code will run sequentially. In our experiments, we used 10 cores. For reproducibility, we recommend that you also use ten cores. This code was tested with the birds dataset in the following machine:
@@ -76,71 +95,33 @@ Topology: 6-Core | model: Intel Core i7-10750H | bits: 64 | type: MT MCP | L2 ca
 
 Then the experiment was executed in a cluster at UFSCar.
 
-**Important: we used the CLUS classifier in this experiment. This implies generating all physical ARFF training, validating, and testing files. Our code generates the files first in RAM and then saves them to the HD. However, to avoid memory problems, immediately after saving to HD, the files are validated (or tested) and then deleted. Even so, make sure you have enough space on your HD and RAM for this procedure.**
-
+## Results
+The results stored in the folder _DFGraphs_ it will be used in the next phase: *BestCommunityMethod*. The result for a dataset must be put in the folder *BestCommunityMethod* in the respective code. Also, must be in "tar.gz" format.
 
 ## RUN
-To run the code, open the terminal, enter the */TCP-TR-H/R/* folder, and type
+To run the code, open the terminal, enter the *~/TCP-TR-H-Clus/R* folder, and type
 
 ```
-Rscript tcp.R [number_dataset] [number_cores] [number_folds] [similarity] [name_folder_results]
+Rscript tcp.R [absolute_path_to_config_file]
 ```
 
-Where:
-
-_number_dataset_ is the dataset number in the datasets.csv file
-
-_number_cores_ is the total cores you want to use in parallel execution.
-
-_number_folds_ is the number of folds you want for cross-validation
-
-_similarity_ is similarity measure that were used to build the graph
-
-_name_folders_results_ is the name of the folder to save the results
-
-
-All parameters are mandatory. Example:
+Example:
 
 ```
-Rscript tcp.R 17 5 10 "Jaccard" "/dev/shm/results/"
-
+Rscript tcp.R "~/TCP-TR-H-Clus/config-files/jaccard/Macro-F1/ctjma-GpositiveGO.csv"
 ```
 
-This will execute the code for the dataset number 17 in the _dataset.csv_, with 5 cores, 10 folds and the process will be store in the _/dev/shm/results/_. This code automatically makes a copy of the */dev/shm/results* in the folder *Reports* - which is in the root of the project. In this way, you can run the code using a temporary folder, like *scratch* and *shm*, to speed up the execution.
-
-
-## Results
-The results are store in the Reports folder
-
-## Video Demonstration
-Click [here](https://youtu.be/UZEOs-sXAf0) to watch a video that demonstrate how to run this code
-
+## DOWNLOAD RESULTS
+[Click here]
 
 ## Acknowledgment
 This study is financed in part by the Coordenação de Aperfeiçoamento de Pessoal de Nível Superior - Brasil (CAPES) - Finance Code 001
 
 ## Links
 
-[Post-Graduate Program in Computer Science](http://ppgcc.dc.ufscar.br/pt-br)
-
-[Biomal](http://www.biomal.ufscar.br/)
-
-[Computer Department](https://site.dc.ufscar.br/)
-
-[CAPES](https://www.gov.br/capes/pt-br)
-
-[Embarcados](https://www.embarcados.com.br/author/cissa/)
-
-[Linkedin](https://www.linkedin.com/in/elainececiliagatto/)
-
-[Linkedin](https://www.linkedin.com/company/27241216)
-
-[Instagram](https://www.instagram.com/cissagatto/)
-
-[Twitter](https://twitter.com/cissagatto)
+| [Post-Graduate Program in Computer Science](http://ppgcc.dc.ufscar.br/pt-br) | [Computer Department](https://site.dc.ufscar.br/) |  [Biomal](http://www.biomal.ufscar.br/) | [CAPES](https://www.gov.br/capes/pt-br) | [Embarcados](https://www.embarcados.com.br/author/cissa/) | [Read Prensa](https://prensa.li/@cissa.gatto/) | [Linkedin Company](https://www.linkedin.com/company/27241216) | [Linkedin Profile](https://www.linkedin.com/in/elainececiliagatto/) | [Instagram](https://www.instagram.com/cissagatto) | [Facebook](https://www.facebook.com/cissagatto) | [Twitter](https://twitter.com/cissagatto) | [Twitch](https://www.twitch.tv/cissagatto) | [Youtube](https://www.youtube.com/CissaGatto) |
 
 ## Report Error
-
 Please contact me: elainececiliagatto@gmail.com
 
 # Thanks
