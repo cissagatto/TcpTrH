@@ -53,7 +53,7 @@ silho.build.data.frame <- function(){
 ###############################################################################
 #
 ###############################################################################
-silho.verifying.tresholds <- function(parameters){
+verifying.tresholds <- function(parameters){
 
   retorno = list()
 
