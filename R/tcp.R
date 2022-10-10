@@ -28,14 +28,14 @@ cat("\n\n##############################################################")
 
 
 cat("\n\n##############################################################")
-cat("\n# TCP-TR-H: SET WORK SPACE                                  #")
+cat("\n# TCP-TR-H-Clus SET WORK SPACE                                  #")
 cat("\n##############################################################\n\n")
 FolderRoot = "~/TCP-TR-H-Clus"
 FolderScripts = paste(FolderRoot, "/R", sep="")
 
 
 cat("\n\n##############################################################")
-cat("\n# TCP-TR-H: LOAD SOURCES                                    #")
+cat("\n# TCP-TR-H-Clus LOAD SOURCES                                    #")
 cat("\n##############################################################\n\n")
 setwd(FolderScripts)
 source("libraries.R")
@@ -48,7 +48,7 @@ source("run.R")
 
 
 cat("\n\n##############################################################")
-cat("\n# TCP-TR-H: OPTIONS CONFIGURATIONS                          #")
+cat("\n# TCP-TR-H-Clus OPTIONS CONFIGURATIONS                          #")
 cat("\n##############################################################\n\n")
 options(java.parameters = "-Xmx64g")
 options(show.error.messages = TRUE)
@@ -56,14 +56,14 @@ options(scipen=20)
 
 
 cat("\n\n##############################################################")
-cat("\n# TCP-TR-H: READ DATASETS                                   #")
+cat("\n# TCP-TR-H-Clus READ DATASETS                                   #")
 cat("\n##############################################################\n\n")
 setwd(FolderRoot)
 datasets <- data.frame(read.csv("datasets-original.csv"))
 
 
 cat("\n\n##############################################################")
-cat("\n# TCP-TR-H: GET THE ARGUMENTS COMMAND LINE                  #")
+cat("\n# TCP-TR-H-Clus GET THE ARGUMENTS COMMAND LINE                  #")
 cat("\n##############################################################\n\n")
 args <- commandArgs(TRUE)
 
@@ -74,9 +74,16 @@ args <- commandArgs(TRUE)
 # from csv file                                                             #
 #############################################################################
 
-# config_file = "~/TCP-TR-H-Clus/config-files/rogers/Macro-F1/trro-GpositiveGO.csv"
+
+# config_file = "~/TCP-TR-H-Clus/config-files/rogers/Macro-F1/ctroma-GpositiveGO.csv"
+# config_file = "~/TCP-TR-H-Clus/config-files/rogers/Silhouette/ctros-GpositiveGO.csv"
+
+# config_file = "~/TCP-TR-H-Clus/config-files/jaccard/Macro-F1/ctjma-GpositiveGO.csv"
+# config_file = "~/TCP-TR-H-Clus/config-files/jaccard/Silhouette/ctjs-GpositiveGO.csv"
+
 
 config_file <- args[1]
+
 
 if(file.exists(config_file)==FALSE){
   cat("\n################################################################")
@@ -331,7 +338,7 @@ timeTCP = system.time(res <- execute(parameters))
 
 
 cat("\n\n###################################################################")
-cat("\n# ====> TCP-TR-H: SAVE RUNTIME                                     #")
+cat("\n# ====> TCP-TR-H-Clus SAVE RUNTIME                                     #")
 cat("\n#####################################################################\n\n")
 result_set <- t(data.matrix(timeTCP))
 
@@ -361,6 +368,23 @@ if(parameters$Validation==1){
   }
   cat("\n\n")
 
+  cat("\n\n#######################################################")
+  cat("\n# COPY TEST TO GOOGLE DRIVE                           #")
+  cat("\n#########################################################\n\n")
+  origem1 = parameters$Folders$folderReports
+  destino1 = paste("nuvem:Clus/Communities/Test/",
+                   similarity, "/Silhouette/", dataset_name,
+                   "/Tr-H/", sep="")
+  comando1 = paste("rclone copy ", origem1, " ",
+                   destino1, sep="")
+  cat("\n\n\n", comando1, "\n\n\n")
+  a = print(system(comando1))
+  a = as.numeric(a)
+  if(a != 0){
+    stop("Erro RCLONE")
+    quit("yes")
+  }
+  cat("\n\n")
 
   # str2 = paste("cp -r ", diretorios$folderTest ,
   #              " ", diretorios$folderReports, sep="")
@@ -396,6 +420,24 @@ if(parameters$Validation==1){
   destino1 = paste("nuvem:Clus/Communities/Test/",
                    similarity, "/Macro-F1/", dataset_name,
                    "/Tr-H/Tested", sep="")
+  comando1 = paste("rclone copy ", origem1, " ",
+                   destino1, sep="")
+  cat("\n\n\n", comando1, "\n\n\n")
+  a = print(system(comando1))
+  a = as.numeric(a)
+  if(a != 0){
+    stop("Erro RCLONE")
+    quit("yes")
+  }
+  cat("\n\n")
+
+  cat("\n\n#######################################################")
+  cat("\n# COPY TEST TO GOOGLE DRIVE                           #")
+  cat("\n#########################################################\n\n")
+  origem1 = parameters$Folders$folderReports
+  destino1 = paste("nuvem:Clus/Communities/Test/",
+                   similarity, "/Macro-F1/", dataset_name,
+                   "/Tr-H/", sep="")
   comando1 = paste("rclone copy ", origem1, " ",
                    destino1, sep="")
   cat("\n\n\n", comando1, "\n\n\n")
@@ -453,6 +495,24 @@ if(parameters$Validation==1){
   }
   cat("\n\n")
 
+  cat("\n\n#######################################################")
+  cat("\n# COPY TEST TO GOOGLE DRIVE                           #")
+  cat("\n#########################################################\n\n")
+  origem1 = parameters$Folders$folderReports
+  destino1 = paste("nuvem:Clus/Communities/Test/",
+                   similarity, "/Micro-F1/", dataset_name,
+                   "/Tr-H/", sep="")
+  comando1 = paste("rclone copy ", origem1, " ",
+                   destino1, sep="")
+  cat("\n\n\n", comando1, "\n\n\n")
+  a = print(system(comando1))
+  a = as.numeric(a)
+  if(a != 0){
+    stop("Erro RCLONE")
+    quit("yes")
+  }
+  cat("\n\n")
+
 
   # str2 = paste("cp -r ", diretorios$folderTest ,
   #              " ", diretorios$folderReports, sep="")
@@ -477,7 +537,7 @@ if(parameters$Validation==1){
 
 
 cat("\n\n##############################################################")
-  cat("\n# TCP-TR-H: CLEAN                                            #")
+  cat("\n# TCP-TR-H-Clus CLEAN                                            #")
   cat("\n##############################################################\n\n")
 str2 = paste("rm -rf ", diretorios$folderResults, sep="")
 print(system(str2))
@@ -485,7 +545,7 @@ rm(list = ls())
 gc()
 
 cat("\n\n##############################################################")
-  cat("\n# TCP-TR-H: END                                              #")
+  cat("\n# TCP-TR-H-Clus END                                              #")
   cat("\n##############################################################\n")
 
 rm(list = ls())

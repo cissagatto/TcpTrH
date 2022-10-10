@@ -31,6 +31,202 @@ FolderScripts = paste(FolderRoot, "/R", sep="")
 ########################################################################
 #
 ########################################################################
+choosed <- function(parameters){
+
+  retorno = list()
+
+  # generating partitions and groups
+  partitions = seq(1,parameters$Dataset.Info$Labels,by=1)
+  groups = seq(1,parameters$Dataset.Info$Labels,by=1)
+  all.partitions = data.frame(partitions, groups)
+
+  partitions = seq(2,(parameters$Dataset.Info$Labels-1),by=1)
+  groups = seq(2,(parameters$Dataset.Info$Labels-1),by=1)
+  all.hybrid.partitions = data.frame(partitions, groups)
+
+  # saving information
+  setwd(parameters$Folders$folderReports)
+  write.csv(all.partitions, "all-partitions.csv", row.names = FALSE)
+
+  # data frames
+  todos.tr.h = data.frame()
+  todos.eb = data.frame()
+  todos.fg = data.frame()
+  todos.wt = data.frame()
+  todos = data.frame()
+
+  # vectors
+  total = c(0)
+  nomes = c()
+
+  # for all folds
+  f = 1
+  while(f<=parameters$Number.Folds){
+
+    #  "/dev/shm/j-GpositiveGO/Partitions/Split-1"
+    FolderSplit = paste(parameters$Folders$folderPartition,
+                        "/Split-", f,
+                        sep="")
+
+    # "/dev/shm/ro-ma-knh-GpositiveGO/Communities/Split-1"
+    FolderSC = paste(parameters$Folders$folderCommunities,
+                     "/Split-", f,
+                     sep="")
+
+    # file name
+    # "/dev/shm/j-GpositiveGO/Partitions/Split-1/fold-1-Tr-h-choosed.csv"
+    tr.h = paste(FolderSplit, "/fold-", f, "-tr-h-choosed.csv", sep="")
+
+    # open file with all methods chosen for FOLD=1
+    a.tr.h = data.frame(read.csv(tr.h))
+
+    num.spar = nrow(a.tr.h)
+
+    # how many methods there are?
+    total[f] = nrow(a.tr.h)
+
+    # what is it folds?
+    nomes[f] = paste("fold-",f,sep="")
+
+    # save the data frame with that information
+    todos.tr.h = rbind(todos.tr.h, a.tr.h)
+
+    # through all Tr sparcification
+    k = 0
+    while(k<num.spar){
+
+      cat("\n#===================================================#")
+      cat("\n# FOLD \t", f, "                                      #")
+      cat("\n# TR \t", k, "                                        #")
+      cat("\n#===================================================#\n")
+
+      # "/dev/shm/j-GpositiveGO/Partitions/Split-1/Tr-1"
+      FolderTr = paste(FolderSplit, "/Tr-", k, sep="")
+
+      #  "/dev/shm/ro-ma-knh-GpositiveGO/Communities/Split-1/Tr-1"
+      FolderTC = paste(FolderSC, "/Tr-", k, sep="")
+
+      # file names
+      eb = paste(FolderTr, "/tr-", k,
+                 "-eb-partitions-hierarchical.csv",
+                 sep="")
+
+      eb.c = paste(FolderTC, "/tr-", k,
+                   "-eb-partitions-hierarchical.csv",
+                   sep="")
+
+      fg = paste(FolderTr, "/tr-", k,
+                 "-fg-partitions-hierarchical.csv",
+                 sep="")
+
+      fg.c = paste(FolderTC, "/tr-", k,
+                   "-fg-partitions-hierarchical.csv",
+                   sep="")
+
+      wt = paste(FolderTr, "/tr-", k,
+                 "-wt-partitions-hierarchical.csv",
+                 sep="")
+
+      wt.c = paste(FolderTC, "/tr-", k,
+                   "-wt-partitions-hierarchical.csv",
+                   sep="")
+
+      if(file.exists(eb)==TRUE){
+
+        # open files
+        a.eb = data.frame(read.csv(eb))
+        a.fg = data.frame(read.csv(fg))
+        a.wt = data.frame(read.csv(wt))
+
+        # gather info with the specific fold and Tr
+        d.eb = data.frame(fold = f, Tr = k, a.eb)
+        d.fg = data.frame(fold = f, Tr = k, a.fg)
+        d.wt = data.frame(fold = f, Tr = k, a.wt)
+
+        todos.eb = rbind(todos.eb, d.eb)
+        todos.fg = rbind(todos.fg, d.fg)
+        todos.wt = rbind(todos.wt, d.wt)
+
+        m.eb = data.frame(fold = f, Tr = k, method = "eb", a.eb)
+        m.fg = data.frame(fold = f, Tr = k, method = "fg", a.fg)
+        m.wt = data.frame(fold = f, Tr = k, method = "wt", a.wt)
+
+        res = rbind(m.eb, m.fg, m.wt)
+        todos = rbind(todos, res)
+
+      } else {
+
+        # open files
+        a.eb = data.frame(read.csv(eb.c))
+        a.fg = data.frame(read.csv(fg.c))
+        a.wt = data.frame(read.csv(wt.c))
+
+        # gather info with the specific fold and Tr
+        d.eb = data.frame(fold = f, Tr = k, a.eb)
+        d.fg = data.frame(fold = f, Tr = k, a.fg)
+        d.wt = data.frame(fold = f, Tr = k, a.wt)
+
+        todos.eb = rbind(todos.eb, d.eb)
+        todos.fg = rbind(todos.fg, d.fg)
+        todos.wt = rbind(todos.wt, d.wt)
+
+        m.eb = data.frame(fold = f, Tr = k, method = "eb", a.eb)
+        m.fg = data.frame(fold = f, Tr = k, method = "fg", a.fg)
+        m.wt = data.frame(fold = f, Tr = k, method = "wt", a.wt)
+
+        res = rbind(m.eb, m.fg, m.wt)
+        todos = rbind(todos, res)
+
+      }
+
+      k = k + 1
+      gc()
+    } # fim do Tr
+
+    f = f + 1
+    gc()
+  } # fim do fold
+
+  setwd(parameters$Folders$folderReports)
+
+  # saving sparcification
+  sparcification = data.frame(nomes, total)
+  n = mean(sparcification$total)
+  sparcification.2 = data.frame(sparcification,
+                                minimum = min(sparcification$total),
+                                maximum = max(sparcification$total),
+                                mean = trunc(n,1))
+  names(sparcification.2)[c(1,2)]=c("folds", "tr")
+  write.csv(sparcification.2, "sparcification.csv", row.names = FALSE)
+
+  # saving all information
+  write.csv(todos, "all-partitions.choosed.csv", row.names = FALSE)
+  write.csv(todos.tr.h, "all-Tr-h-choosed.csv", row.names = FALSE)
+  write.csv(todos.eb, "all-eb-partitions.csv", row.names = FALSE)
+  write.csv(todos.fg, "all-fg-partitions.csv", row.names = FALSE)
+  write.csv(todos.wt, "all-wt-partitions.csv", row.names = FALSE)
+
+  # return
+  retorno$all.partitions.choosed = todos
+  retorno$all.methods.choosed = todos.tr.h
+  retorno$all.eb.partitions = todos.eb
+  retorno$all.fg.partitions = todos.fg
+  retorno$all.wt.partitions = todos.wt
+  retorno$sparcification = sparcification.2
+  retorno$all.partitions = all.partitions
+  retorno$all.hybrid.partitions = all.hybrid.partitions
+  return(retorno)
+
+  cat("\n\n##########################################################")
+  cat("\n# FINISH CHOOSED                                           #")
+  cat("\n############################################################\n\n")
+
+}
+
+
+########################################################################
+#
+########################################################################
 maf1.best.partitions <- function(parameters){
 
   retorno = list()
@@ -318,202 +514,6 @@ maf1.best.partitions <- function(parameters){
 
 
 
-########################################################################
-#
-########################################################################
-maf1.choosed <- function(parameters){
-
-  retorno = list()
-
-  # generating partitions and groups
-  partitions = seq(1,parameters$Dataset.Info$Labels,by=1)
-  groups = seq(1,parameters$Dataset.Info$Labels,by=1)
-  all.partitions = data.frame(partitions, groups)
-
-  partitions = seq(2,(parameters$Dataset.Info$Labels-1),by=1)
-  groups = seq(2,(parameters$Dataset.Info$Labels-1),by=1)
-  all.hybrid.partitions = data.frame(partitions, groups)
-
-  # saving information
-  setwd(parameters$Folders$folderReports)
-  write.csv(all.partitions, "all-partitions.csv", row.names = FALSE)
-
-  # data frames
-  todos.tr.h = data.frame()
-  todos.eb = data.frame()
-  todos.fg = data.frame()
-  todos.wt = data.frame()
-  todos = data.frame()
-
-  # vectors
-  total = c(0)
-  nomes = c()
-
-  # for all folds
-  f = 1
-  while(f<=parameters$Number.Folds){
-
-    #  "/dev/shm/j-GpositiveGO/Partitions/Split-1"
-    FolderSplit = paste(parameters$Folders$folderPartitions,
-                        "/Split-", f,
-                        sep="")
-
-    # "/dev/shm/ro-ma-knh-GpositiveGO/Communities/Split-1"
-    FolderSC = paste(parameters$Folders$folderCommunities,
-                     "/Split-", f,
-                     sep="")
-
-    # file name
-    # "/dev/shm/j-GpositiveGO/Partitions/Split-1/fold-1-Tr-h-choosed.csv"
-    tr.h = paste(FolderSplit, "/fold-", f, "-tr-h-choosed.csv", sep="")
-
-    # open file with all methods chosen for FOLD=1
-    a.tr.h = data.frame(read.csv(tr.h))
-
-    num.spar = nrow(a.tr.h)
-
-    # how many methods there are?
-    total[f] = nrow(a.tr.h)
-
-    # what is it folds?
-    nomes[f] = paste("fold-",f,sep="")
-
-    # save the data frame with that information
-    todos.tr.h = rbind(todos.tr.h, a.tr.h)
-
-    # through all Tr sparcification
-    k = 0
-    while(k<num.spar){
-
-      cat("\n#===================================================#")
-      cat("\n# FOLD \t", f, "                                      #")
-      cat("\n# TR \t", k, "                                        #")
-      cat("\n#===================================================#\n")
-
-      # "/dev/shm/j-GpositiveGO/Partitions/Split-1/Tr-1"
-      FolderTr = paste(FolderSplit, "/Tr-", k, sep="")
-
-      #  "/dev/shm/ro-ma-knh-GpositiveGO/Communities/Split-1/Tr-1"
-      FolderTC = paste(FolderSC, "/Tr-", k, sep="")
-
-      # file names
-      eb = paste(FolderTr, "/tr-", k,
-                 "-eb-partitions-hierarchical.csv",
-                 sep="")
-
-      eb.c = paste(FolderTC, "/tr-", k,
-                   "-eb-partitions-hierarchical.csv",
-                   sep="")
-
-      fg = paste(FolderTr, "/tr-", k,
-                 "-fg-partitions-hierarchical.csv",
-                 sep="")
-
-      fg.c = paste(FolderTC, "/tr-", k,
-                   "-fg-partitions-hierarchical.csv",
-                   sep="")
-
-      wt = paste(FolderTr, "/tr-", k,
-                 "-wt-partitions-hierarchical.csv",
-                 sep="")
-
-      wt.c = paste(FolderTC, "/tr-", k,
-                   "-wt-partitions-hierarchical.csv",
-                   sep="")
-
-      if(file.exists(eb)==TRUE){
-
-        # open files
-        a.eb = data.frame(read.csv(eb))
-        a.fg = data.frame(read.csv(fg))
-        a.wt = data.frame(read.csv(wt))
-
-        # gather info with the specific fold and Tr
-        d.eb = data.frame(fold = f, Tr = k, a.eb)
-        d.fg = data.frame(fold = f, Tr = k, a.fg)
-        d.wt = data.frame(fold = f, Tr = k, a.wt)
-
-        todos.eb = rbind(todos.eb, d.eb)
-        todos.fg = rbind(todos.fg, d.fg)
-        todos.wt = rbind(todos.wt, d.wt)
-
-        m.eb = data.frame(fold = f, Tr = k, method = "eb", a.eb)
-        m.fg = data.frame(fold = f, Tr = k, method = "fg", a.fg)
-        m.wt = data.frame(fold = f, Tr = k, method = "wt", a.wt)
-
-        res = rbind(m.eb, m.fg, m.wt)
-        todos = rbind(todos, res)
-
-      } else {
-
-        # open files
-        a.eb = data.frame(read.csv(eb.c))
-        a.fg = data.frame(read.csv(fg.c))
-        a.wt = data.frame(read.csv(wt.c))
-
-        # gather info with the specific fold and Tr
-        d.eb = data.frame(fold = f, Tr = k, a.eb)
-        d.fg = data.frame(fold = f, Tr = k, a.fg)
-        d.wt = data.frame(fold = f, Tr = k, a.wt)
-
-        todos.eb = rbind(todos.eb, d.eb)
-        todos.fg = rbind(todos.fg, d.fg)
-        todos.wt = rbind(todos.wt, d.wt)
-
-        m.eb = data.frame(fold = f, Tr = k, method = "eb", a.eb)
-        m.fg = data.frame(fold = f, Tr = k, method = "fg", a.fg)
-        m.wt = data.frame(fold = f, Tr = k, method = "wt", a.wt)
-
-        res = rbind(m.eb, m.fg, m.wt)
-        todos = rbind(todos, res)
-
-      }
-
-      k = k + 1
-      gc()
-    } # fim do Tr
-
-    f = f + 1
-    gc()
-  } # fim do fold
-
-  setwd(parameters$Folders$folderReports)
-
-  # saving sparcification
-  sparcification = data.frame(nomes, total)
-  n = mean(sparcification$total)
-  sparcification.2 = data.frame(sparcification,
-             minimum = min(sparcification$total),
-             maximum = max(sparcification$total),
-             mean = trunc(n,1))
-  names(sparcification.2)[c(1,2)]=c("folds", "tr")
-  write.csv(sparcification.2, "sparcification.csv", row.names = FALSE)
-
-  # saving all information
-  write.csv(todos, "all-partitions.choosed.csv", row.names = FALSE)
-  write.csv(todos.tr.h, "all-Tr-h-choosed.csv", row.names = FALSE)
-  write.csv(todos.eb, "all-eb-partitions.csv", row.names = FALSE)
-  write.csv(todos.fg, "all-fg-partitions.csv", row.names = FALSE)
-  write.csv(todos.wt, "all-wt-partitions.csv", row.names = FALSE)
-
-  # return
-  retorno$all.partitions.choosed = todos
-  retorno$all.methods.choosed = todos.tr.h
-  retorno$all.eb.partitions = todos.eb
-  retorno$all.fg.partitions = todos.fg
-  retorno$all.wt.partitions = todos.wt
-  retorno$sparcification = sparcification.2
-  retorno$all.partitions = all.partitions
-  retorno$all.hybrid.partitions = all.hybrid.partitions
-  return(retorno)
-
-  cat("\n\n##########################################################")
-  cat("\n# FINISH CHOOSED                                           #")
-  cat("\n############################################################\n\n")
-
-}
-
-
 
 
 ######################################################################
@@ -529,8 +529,8 @@ maf1.validate.partitions <- function(parameters){
   labels.distribution = data.frame()
 
   f = 1
-  validateParalel <- foreach(f = 1:parameters$Number.Folds) %dopar%{
-  # while(f<=parameters$Number.Folds){
+  #validateParalel <- foreach(f = 1:parameters$Number.Folds) %dopar%{
+  while(f<=parameters$Number.Folds){
 
     parameters = parameters
 
@@ -920,7 +920,7 @@ maf1.validate.partitions <- function(parameters){
                   "-distribution-labels.csv", sep="")
     write.csv(labels.distribution, namae , row.names = FALSE)
 
-    #f = f + 1
+    f = f + 1
     gc()
   } # fim do foreach
 
@@ -939,8 +939,8 @@ maf1.validate.partitions <- function(parameters){
 maf1.val.gather.predicts <- function(parameters){
 
   f = 1
-  gatherParal <- foreach(f = 1:parameters$Number.Folds) %dopar%{
-  # while(f<=parameters$Number.Folds)
+  #gatherParal <- foreach(f = 1:parameters$Number.Folds) %dopar%{
+  while(f<=parameters$Number.Folds){
 
     # data frame
     apagar = c(0)
@@ -992,6 +992,8 @@ maf1.val.gather.predicts <- function(parameters){
     write.csv(y_pred, "y_predict.csv", row.names = FALSE)
     write.csv(y_true, "y_true.csv", row.names = FALSE)
 
+    f = f + 1
+
     gc()
   } # fim do foreach
 
@@ -1015,6 +1017,19 @@ maf1.val.evaluate <- function(parameters){
     cat("\n#====================================================#")
     cat("\n# FOLD ", f, "                                       #")
     cat("\n#====================================================#\n")
+
+
+    ################################################################
+    FolderRoot = "~/TCP-TR-H-Clus"
+    FolderScripts = paste(FolderRoot, "/R", sep="")
+
+    ################################################################
+    setwd(FolderScripts)
+    source("libraries.R")
+
+    setwd(FolderScripts)
+    source("utils.R")
+
 
     # data frame
     apagar = c(0)
