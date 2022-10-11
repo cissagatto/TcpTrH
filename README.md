@@ -61,6 +61,7 @@ See more information about Conda environments [here](https://docs.conda.io/proje
 ### STEP 4
 You will need the previous partitions computed by [this code](https://github.com/cissagatto/Generate-Partitions-Communities). Put the "tar.gz" file in PARTITIONS folder in this project. Whithout it you cannot run this code.
 
+
 ### STEP 5
 To run this code you will need a configuration file saved in *csv* format and with the following information:
 
@@ -69,11 +70,18 @@ To run this code you will need a configuration file saved in *csv* format and wi
 | Dataset_Path      | Absolute path to the folder where the dataset's tar.gz is stored          |
 | Temporary_Path    | Absolute path to the folder where temporary processing will be performed* |
 | Partitions_Path   | Absolute path to the folder where partitions are store                    |
+| Validation        | Choose which one to run: 1-silhouette, 2-macrof1, or 3-microf1*           |
 | Similarity        | Choose which one to run: jaccard, rogers, etc.                            |
 | Dataset_Name      | Dataset name according to *datasets-original.csv* file                    |
 | Number_Dataset    | Dataset number according to *datasets-original.csv* file                  |
 | Number_Folds      | Number of folds used in cross validation                                  |
 | Number_Cores      | Number of cores for parallel processing                                   |
+
+
+* The experiment can be run with 3 different validation methods to choose the best partition:
+1 - using silhouette coefficient (quality clustering measure)
+2 - using the macrof-1 measure
+3 - using the microf-1 measure
 
 * Use folders like */dev/shm*, *tmp* or *scratch* here.
 
