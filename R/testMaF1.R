@@ -129,10 +129,11 @@ maf1.build.test <- function(parameters){
     setwd(parameters$Folders$folderReports)
     sparcification = data.frame(read.csv("sparcification.csv"))
     sparcification = sparcification[f,]
-    n = mean(sparcification$minimum)
+
+    num.tr = length(parameters$valid_tr)
 
     k = 0
-    while(k<n){
+    while(k<num.tr){
 
       cat("\n#=========================================================")
       cat("\n# TR = ", k)
@@ -163,6 +164,7 @@ maf1.build.test <- function(parameters){
       methods = filter(parameters$Choosed$all.methods.choosed, split == f)
       Tr = paste("tr-", k, sep="")
       methods = filter(methods, sparsification == Tr)
+
 
       # QUEM É A PARTIÇÃO?
       partitions = filter(parameters$Choosed$all.partitions.choosed, fold == f)
@@ -504,10 +506,11 @@ maf1.gather.predicts <- function(parameters){
 
     setwd(parameters$Folders$folderReports)
     sparcification = data.frame(read.csv("sparcification.csv"))
-    n = mean(sparcification$minimum)
+
+    num.tr = length(parameters$valid_tr)
 
     k = 0
-    while(k<n){
+    while(k<num.tr){
 
       # "/dev/shm/j-GpositiveGO/Partitions/Split-1/Tr-1"
       FolderPartTr = paste(FolderPSplit, "/Tr-", k, sep="")
@@ -651,11 +654,12 @@ maf1.evaluate.test <- function(parameters){
 
     setwd(parameters$Folders$folderReports)
     sparcification = data.frame(read.csv("sparcification.csv"))
-    n = mean(sparcification$minimum)
+
+    num.tr = length(parameters$valid_tr)
 
     # Tr
     k = 0
-    while(k<n){
+    while(k<num.tr){
 
       cat("\n#=========================================================")
       cat("\n# Tr = ", k)
@@ -777,8 +781,10 @@ maf1.gather.evaluation <- function(parameters){
     avaliadoTr = data.frame(apagar)
     nomesThreshold = c("")
 
+    num.tr = length(parameters$valid_tr)
+
     k = 0
-    while(k<n){
+    while(k<num.tr){
 
       cat("\n#==========================")
       cat("\n# Fold \t", f)

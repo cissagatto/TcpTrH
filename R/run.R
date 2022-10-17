@@ -28,9 +28,7 @@ FolderRoot = "~/TCP-TR-H-Clus"
 FolderScripts = paste(FolderRoot, "/R", sep="")
 
 
-##################################################################################################
-#
-##################################################################################################
+
 execute <- function(parameters){
 
   FolderRoot = "~/TCP-TR-H-Clus"
@@ -76,17 +74,13 @@ execute <- function(parameters){
   setwd(FolderScripts)
   source("testMaF1.R")
 
+
   cat("\n\n################################################################")
   cat("\n# RUN: Get the label space                                     #")
   cat("\n################################################################\n\n")
   timeLabelSpace = system.time(resLS <- label.space(parameters))
   parameters$LabelSpace = resLS
 
-  cat("\n\n################################################")
-  cat("\n# CHOOSED                                        #")
-  cat("\n#################################################\n\n")
-  timeChoosed = system.time(resChoosed <- choosed(parameters))
-  parameters$Choosed = resChoosed
 
   cat("\n\n#############################################################")
   cat("\n# VERIFYING THRESHOLDS                                      #")
@@ -94,11 +88,19 @@ execute <- function(parameters){
   timeVeri = system.time(resVeri <- verifying.tresholds(parameters))
   parameters$valid_tr = resVeri$tr_valid
 
+
+
+  cat("\n\n################################################")
+  cat("\n# CHOOSED                                        #")
+  cat("\n#################################################\n\n")
+  timeChoosed = system.time(resChoosed <- choosed(parameters))
+  parameters$Choosed = resChoosed
+
+
   if(length(parameters$valid_tr)!=0){
 
 
     if(validation==1){
-
 
       cat("\n\n#############################################################")
       cat("\n# VALIDATION WITH SILHOUETTE                                #")
@@ -112,55 +114,35 @@ execute <- function(parameters){
       timeBest = system.time(resBest <- silho.best.partitions(parameters))
       parameters$bests = resBest
 
+      cat("\n\n#######################################################")
+      cat("\n# COPY VALIDATION TO GOOGLE DRIVE                     #")
+      cat("\n#########################################################\n\n")
+      origem1 = parameters$Folders$folderValSilho
+      destino1 = paste("nuvem:Clus/Communities/Test/",
+                       similarity, "/Silhouette/", dataset_name,
+                       "/Tr-H/Validation", sep="")
+      comando1 = paste("rclone copy ", origem1, " ",
+                       destino1, sep="")
+      cat("\n\n\n", comando1, "\n\n\n")
+      a = print(system(comando1))
+      a = as.numeric(a)
+      if(a != 0){
+        stop("Erro RCLONE")
+        quit("yes")
+      }
+      cat("\n\n")
 
-      # cat("\n\n#######################################################")
-      # cat("\n# COPY VALIDATION TO GOOGLE DRIVE                     #")
-      # cat("\n#########################################################\n\n")
-      # origem1 = parameters$Folders$folderValSilho
-      # destino1 = paste("nuvem:Clus/Communities/Test/",
-      #                  similarity, "/Silhouette/", dataset_name,
-      #                  "/Tr-H/Validation", sep="")
-      # comando1 = paste("rclone copy ", origem1, " ",
-      #                  destino1, sep="")
-      # cat("\n\n\n", comando1, "\n\n\n")
-      # a = print(system(comando1))
-      # a = as.numeric(a)
-      # if(a != 0){
-      #   stop("Erro RCLONE")
-      #   quit("yes")
-      # }
-      # cat("\n\n")
 
-
-      # cat("\n\n#######################################################")
-      # cat("\n# DELETING VALIDATION                                 #")
-      # cat("\n#########################################################\n\n")
-      # system(paste("rm -r ", parameters$Folders$folderValSilho, sep=""))
+      cat("\n\n#######################################################")
+      cat("\n# DELETING VALIDATION                                 #")
+      cat("\n#########################################################\n\n")
+      system(paste("rm -r ", parameters$Folders$folderValSilho, sep=""))
 
 
       cat("\n\n############################################################")
       cat("\n# TEST WITH SIHOUETTE                                      #")
       cat("\n############################################################\n\n")
       timeTest = system.time(resTHP <- silho.test(parameters))
-
-
-      # cat("\n\n#######################################################")
-      # cat("\n# COPY TO GOOGLE DRIVE                                #")
-      # cat("\n#########################################################\n\n")
-      # origem1 = parameters$Folders$folderTestSilho
-      # destino1 = paste("nuvem:Clus/Communities/Test/",
-      #                  similarity, "/Silhouette/", dataset_name,
-      #                  "/Tr-H/Tested", sep="")
-      # comando1 = paste("rclone copy ", origem1, " ",
-      #                  destino1, sep="")
-      # cat("\n\n\n", comando1, "\n\n\n")
-      # a = print(system(comando1))
-      # a = as.numeric(a)
-      # if(a != 0){
-      #   stop("Erro RCLONE")
-      #   quit("yes")
-      # }
-      # cat("\n\n")
 
 
       cat("\n\n#############################################################")
@@ -181,6 +163,7 @@ execute <- function(parameters){
 
     } else if (validation==2){
 
+
       cat("\n\n#############################################################")
       cat("\n# VALIDATION WITH CLUS MACRO-F1                             #")
       cat("\n#############################################################\n\n")
@@ -194,29 +177,36 @@ execute <- function(parameters){
       timeBest = system.time(resTHP <- maf1.best.partitions(parameters))
 
 
-      # cat("\n\n#############################################################")
-      # cat("\n# RUN COPY VALIDATION TO GOOGLE DRIVE                       #")
-      # cat("\n#############################################################\n\n")
-      # origem1 = parameters$Folders$folderValMaF1
-      # destino1 = paste("nuvem:Clus/Communities/Test/",
-      #                  similarity, "/Macro-F1/", dataset_name,
-      #                  "/Tr-H/Validation", sep="")
-      # comando1 = paste("rclone copy ", origem1, " ",
-      #                  destino1, sep="")
-      # cat("\n\n\n", comando1, "\n\n\n")
-      # a = print(system(comando1))
-      # a = as.numeric(a)
-      # if(a != 0){
-      #   stop("Erro RCLONE")
-      #   quit("yes")
-      # }
-      # cat("\n\n")
+      cat("\n\n################################################")
+      cat("\n# CHOOSED                                        #")
+      cat("\n#################################################\n\n")
+      timeChoosed = system.time(resChoosed <- choosed(parameters))
+      parameters$Choosed = resChoosed
 
 
-      # cat("\n\n#############################################################")
-      # cat("\n# DELETING VALIDATION DIR                                     #")
-      # cat("\n#############################################################\n\n")
-      # system(paste("rm -r ", parameters$Folders$folderValMaF1, sep=""))
+      cat("\n\n#############################################################")
+      cat("\n# RUN COPY VALIDATION TO GOOGLE DRIVE                       #")
+      cat("\n#############################################################\n\n")
+      origem1 = parameters$Folders$folderValMaF1
+      destino1 = paste("nuvem:Clus/Communities/Test/",
+                       similarity, "/Macro-F1/", dataset_name,
+                       "/Tr-H/Validation", sep="")
+      comando1 = paste("rclone copy ", origem1, " ",
+                       destino1, sep="")
+      cat("\n\n\n", comando1, "\n\n\n")
+      a = print(system(comando1))
+      a = as.numeric(a)
+      if(a != 0){
+        stop("Erro RCLONE")
+        quit("yes")
+      }
+      cat("\n\n")
+
+
+      cat("\n\n#############################################################")
+      cat("\n# DELETING VALIDATION DIR                                     #")
+      cat("\n#############################################################\n\n")
+      system(paste("rm -r ", parameters$Folders$folderValMaF1, sep=""))
 
 
       cat("\n\n#############################################################")

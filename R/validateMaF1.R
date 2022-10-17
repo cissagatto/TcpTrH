@@ -91,9 +91,11 @@ choosed <- function(parameters){
     # save the data frame with that information
     todos.tr.h = rbind(todos.tr.h, a.tr.h)
 
+    num.tr = length(parameters$valid_tr)
+
     # through all Tr sparcification
     k = 0
-    while(k<num.spar){
+    while(k<num.tr){
 
       cat("\n#===================================================#")
       cat("\n# FOLD \t", f, "                                      #")
@@ -238,12 +240,10 @@ maf1.best.partitions <- function(parameters){
       cat("\n# MACRO F1                                        #")
       cat("\n#=================================================#\n\n")
 
-    setwd(parameters$Folders$folderReports)
-    sparcification = data.frame(read.csv("sparcification.csv"))
-    s = mean(sparcification$minimum)
+    num.tr = length(parameters$valid_tr)
 
     k = 0
-    while(k<s){
+    while(k<num.tr){
 
       # "/dev/shm/j-GpositiveGO/Val-MaF1/Tr-1"
       MaF1.FolderTr = paste(parameters$Folders$folderValMaF1,
@@ -372,17 +372,15 @@ maf1.best.partitions <- function(parameters){
     cat("\n#=================================================#\n\n")
 
 
-    setwd(parameters$Folders$folderReports)
-    sparcification = data.frame(read.csv("sparcification.csv"))
-    s = mean(sparcification$total)
-
     all.partitions = data.frame(read.csv("all-partitions.csv"))
     ultimo = nrow(all.partitions)
     all.partitions = all.partitions[c(-1, -ultimo),]
     num.part = parameters$Dataset.Info$Labels-1
 
+    num.tr = length(parameters$valid_tr)
+
     k = 1
-    while(k<=s){
+    while(k<num.tr){
 
       # "/dev/shm/j-GpositiveGO/Val-MaF1/Tr-1"
       MiF1.FolderTr = paste(parameters$Folders$folderValMiF1,
@@ -529,8 +527,8 @@ maf1.validate.partitions <- function(parameters){
   labels.distribution = data.frame()
 
   f = 1
-  #validateParalel <- foreach(f = 1:parameters$Number.Folds) %dopar%{
-  while(f<=parameters$Number.Folds){
+  validateParalel <- foreach(f = 1:parameters$Number.Folds) %dopar%{
+  #while(f<=parameters$Number.Folds){
 
     parameters = parameters
 
@@ -920,7 +918,7 @@ maf1.validate.partitions <- function(parameters){
                   "-distribution-labels.csv", sep="")
     write.csv(labels.distribution, namae , row.names = FALSE)
 
-    f = f + 1
+    #f = f + 1
     gc()
   } # fim do foreach
 
@@ -939,8 +937,8 @@ maf1.validate.partitions <- function(parameters){
 maf1.val.gather.predicts <- function(parameters){
 
   f = 1
-  #gatherParal <- foreach(f = 1:parameters$Number.Folds) %dopar%{
-  while(f<=parameters$Number.Folds){
+  gatherParal <- foreach(f = 1:parameters$Number.Folds) %dopar%{
+  #while(f<=parameters$Number.Folds){
 
     # data frame
     apagar = c(0)
@@ -992,7 +990,7 @@ maf1.val.gather.predicts <- function(parameters){
     write.csv(y_pred, "y_predict.csv", row.names = FALSE)
     write.csv(y_true, "y_true.csv", row.names = FALSE)
 
-    f = f + 1
+    #f = f + 1
 
     gc()
   } # fim do foreach
@@ -1175,11 +1173,10 @@ maf1.validate <- function(parameters){
   names(namesLabels) = c("Index", "Name")
 
   parameters$namesLabes = namesLabels
-
-  n = mean(spar$minimum)
+  num.tr = length(parameters$valid_tr)
 
   k = 0
-  while(k<n){
+  while(k<num.tr){
 
     # "/dev/shm/j-GpositiveGO/Val-MaF1/Tr-1"
     FolderTr = paste(parameters$Folders$folderValMaF1,"/Tr-", k, sep="")
