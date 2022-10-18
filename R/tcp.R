@@ -75,11 +75,12 @@ args <- commandArgs(TRUE)
 #############################################################################
 
 
-# config_file = "~/TCP-TR-H-Clus/config-files/rogers/Macro-F1/ctroma-emotions.csv"
-# config_file = "~/TCP-TR-H-Clus/config-files/rogers/Silhouette/ctros-GpositiveGO.csv"
+# config_file = "/home/cissa/TCP-TR-H-Clus/config-files-2/jaccard/Macro-F1/ctjma-GpositiveGO.csv"
+# config_file = "/home/cissa/TCP-TR-H-Clus/config-files-2/rogers/Macro-F1/ctroma-GpositiveGO.csv"
 
-# config_file = "~/TCP-TR-H-Clus/config-files/jaccard/Macro-F1/ctjma-GpositiveGO.csv"
-# config_file = "~/TCP-TR-H-Clus/config-files/jaccard/Silhouette/ctjs-GpositiveGO.csv"
+# config_file = "/home/cissa/TCP-TR-H-Clus/config-files-2/jaccard/Silhouete/ctjs-GpositiveGO.csv"
+# config_file = "/home/cissa/TCP-TR-H-Clus/config-files-2/rogers/Silhouette/ctros-GpositiveGO.csv"
+
 
 
 config_file <- args[1]
@@ -332,7 +333,7 @@ parameters$Folders = diretorios
 
 
 cat("\n\n###################################################################")
-cat("\n# EXECUTE TCP-TR-H                                                 #")
+cat("\n# EXECUTE TCP-TR-H-Clus                                              #")
 cat("\n#####################################################################\n\n")
 timeTCP = system.time(res <- execute(parameters))
 

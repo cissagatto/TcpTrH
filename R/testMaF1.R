@@ -78,6 +78,9 @@ maf1.build.test <- function(parameters){
     setwd(FolderScripts)
     source("libraries.R")
 
+    setwd(FolderScripts)
+    source("misc.R")
+
 
     #########################################################################
     converteArff <- function(arg1, arg2, arg3){
@@ -130,7 +133,7 @@ maf1.build.test <- function(parameters){
     sparcification = data.frame(read.csv("sparcification.csv"))
     sparcification = sparcification[f,]
 
-    num.tr = length(parameters$valid_tr)
+    num.tr = length(parameters$Valid.TR)
 
     k = 0
     while(k<num.tr){
@@ -507,7 +510,7 @@ maf1.gather.predicts <- function(parameters){
     setwd(parameters$Folders$folderReports)
     sparcification = data.frame(read.csv("sparcification.csv"))
 
-    num.tr = length(parameters$valid_tr)
+    num.tr = length(parameters$Valid.TR)
 
     k = 0
     while(k<num.tr){
@@ -655,7 +658,7 @@ maf1.evaluate.test <- function(parameters){
     setwd(parameters$Folders$folderReports)
     sparcification = data.frame(read.csv("sparcification.csv"))
 
-    num.tr = length(parameters$valid_tr)
+    num.tr = length(parameters$Valid.TR)
 
     # Tr
     k = 0
@@ -781,7 +784,7 @@ maf1.gather.evaluation <- function(parameters){
     avaliadoTr = data.frame(apagar)
     nomesThreshold = c("")
 
-    num.tr = length(parameters$valid_tr)
+    num.tr = length(parameters$Valid.TR)
 
     k = 0
     while(k<num.tr){

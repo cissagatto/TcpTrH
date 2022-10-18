@@ -36,7 +36,7 @@ execute <- function(parameters){
 
   if(parameters$Number.Cores  == 0){
     cat("\n\n##################################################################################################")
-    cat("\n# Zero is a disallowed value for number_cores. Please choose a value greater than or equal to 1. #")
+    cat("\n# RUN: Zero is a disallowed value for number_cores. Please choose a value greater than or equal to 1. #")
     cat("\n##################################################################################################\n\n")
   } else {
     cl <- parallel::makeCluster(parameters$Number.Cores)
@@ -63,6 +63,9 @@ execute <- function(parameters){
   source("utils.R")
 
   setwd(FolderScripts)
+  source("misc.R")
+
+  setwd(FolderScripts)
   source("validateSilho.R")
 
   setwd(FolderScripts)
@@ -83,39 +86,35 @@ execute <- function(parameters){
 
 
   cat("\n\n#############################################################")
-  cat("\n# VERIFYING THRESHOLDS                                      #")
+  cat("\n# RUN: VERIFYING THRESHOLDS                                      #")
   cat("\n#############################################################\n\n")
   timeVeri = system.time(resVeri <- verifying.tresholds(parameters))
-  parameters$valid_tr = resVeri$tr_valid
+  parameters$Valid.TR = resVeri$tr_valid
 
 
+  if(length(parameters$Valid.TR)!=0){
 
-  cat("\n\n################################################")
-  cat("\n# CHOOSED                                        #")
-  cat("\n#################################################\n\n")
-  timeChoosed = system.time(resChoosed <- choosed(parameters))
-  parameters$Choosed = resChoosed
+    cat("\n\nVALID TR !=0 \n\n")
 
+    if(parameters$Validation==1){
 
-  if(length(parameters$valid_tr)!=0){
-
-
-    if(validation==1){
+      cat("\n\nSILHOUETTE\n\n")
 
       cat("\n\n#############################################################")
-      cat("\n# VALIDATION WITH SILHOUETTE                                #")
+      cat("\n# RUN: VALIDATION WITH SILHOUETTE                                #")
       cat("\n#############################################################\n\n")
       timeVal = system.time(resTHP <- silhouette(parameters))
 
 
       cat("\n\n#############################################################")
-      cat("\n# BEST SILHOUETTE                                             #")
+      cat("\n# RUN: BEST SILHOUETTE                                             #")
       cat("\n#############################################################\n\n")
       timeBest = system.time(resBest <- silho.best.partitions(parameters))
       parameters$bests = resBest
 
+
       cat("\n\n#######################################################")
-      cat("\n# COPY VALIDATION TO GOOGLE DRIVE                     #")
+      cat("\n# RUN: COPY VALIDATION TO GOOGLE DRIVE                     #")
       cat("\n#########################################################\n\n")
       origem1 = parameters$Folders$folderValSilho
       destino1 = paste("nuvem:Clus/Communities/Test/",
@@ -134,13 +133,13 @@ execute <- function(parameters){
 
 
       cat("\n\n#######################################################")
-      cat("\n# DELETING VALIDATION                                 #")
+      cat("\n# RUN: DELETING VALIDATION                                 #")
       cat("\n#########################################################\n\n")
       system(paste("rm -r ", parameters$Folders$folderValSilho, sep=""))
 
 
       cat("\n\n############################################################")
-      cat("\n# TEST WITH SIHOUETTE                                      #")
+      cat("\n# RUN: TEST WITH SIHOUETTE                                      #")
       cat("\n############################################################\n\n")
       timeTest = system.time(resTHP <- silho.test(parameters))
 
@@ -149,7 +148,6 @@ execute <- function(parameters){
       cat("\n# RUN: Save Runtime                                         #")
       cat("\n#############################################################\n\n")
       Runtime = rbind(timeLabelSpace,
-                      timeChoosed,
                       timeVeri,
                       timeVal,
                       timeBest,
@@ -161,31 +159,34 @@ execute <- function(parameters){
 
 
 
-    } else if (validation==2){
+    } else if(parameters$Validation==2){
 
 
-      cat("\n\n#############################################################")
-      cat("\n# VALIDATION WITH CLUS MACRO-F1                             #")
-      cat("\n#############################################################\n\n")
-      timeVal = system.time(resTHP <- maf1.validate(parameters))
-
-
-      cat("\n\n#############################################################")
-      cat("\n# BEST PARTITIONS MACRO-F1                                  #")
-      cat("\n#############################################################\n\n")
-      parameters$Best = 8
-      timeBest = system.time(resTHP <- maf1.best.partitions(parameters))
+      cat("\nMACRO-F1")
 
 
       cat("\n\n################################################")
-      cat("\n# CHOOSED                                        #")
+      cat("\n# RUN: CHOOSED                                        #")
       cat("\n#################################################\n\n")
       timeChoosed = system.time(resChoosed <- choosed(parameters))
       parameters$Choosed = resChoosed
 
 
       cat("\n\n#############################################################")
-      cat("\n# RUN COPY VALIDATION TO GOOGLE DRIVE                       #")
+      cat("\n# RUN: VALIDATION WITH CLUS MACRO-F1                             #")
+      cat("\n#############################################################\n\n")
+      timeVal = system.time(resTHP <- maf1.validate(parameters))
+
+
+      cat("\n\n#############################################################")
+      cat("\n# RUN: BEST PARTITIONS MACRO-F1                                  #")
+      cat("\n#############################################################\n\n")
+      parameters$Best = 8
+      timeBest = system.time(resTHP <- maf1.best.partitions(parameters))
+
+
+      cat("\n\n#############################################################")
+      cat("\n# RUN: RUN COPY VALIDATION TO GOOGLE DRIVE                       #")
       cat("\n#############################################################\n\n")
       origem1 = parameters$Folders$folderValMaF1
       destino1 = paste("nuvem:Clus/Communities/Test/",
@@ -204,13 +205,13 @@ execute <- function(parameters){
 
 
       cat("\n\n#############################################################")
-      cat("\n# DELETING VALIDATION DIR                                     #")
+      cat("\n# RUN: DELETING VALIDATION DIR                                     #")
       cat("\n#############################################################\n\n")
       system(paste("rm -r ", parameters$Folders$folderValMaF1, sep=""))
 
 
       cat("\n\n#############################################################")
-      cat("\n# TEST WITH CLUS MACRO-F1                                   #")
+      cat("\n# RUN: TEST WITH CLUS MACRO-F1                                   #")
       cat("\n#############################################################\n\n")
       timeTest = system.time(resTHP <- maf1.test(parameters))
 

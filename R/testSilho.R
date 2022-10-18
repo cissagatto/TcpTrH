@@ -50,94 +50,6 @@ silho.build.data.frame <- function(){
 }
 
 
-###############################################################################
-#
-###############################################################################
-verifying.tresholds <- function(parameters){
-
-  retorno = list()
-
-  todos = data.frame()
-  total = c()
-
-  f = 1
-  while(f<=10){
-    cat("\nF =",f)
-    FolderPSplit = paste(parameters$Folders$folderPartitions,
-                         "/Split-", f, sep="")
-    setwd(FolderPSplit)
-    escolhidos = data.frame(read.csv(paste("fold-",f,
-                                           "-tr-h-choosed.csv",
-                                           sep="")))
-    total[f] = nrow(escolhidos)
-    todos = rbind(todos, escolhidos)
-    f = f + 1
-    gc()
-  }
-
-  maximo = max(total)
-  nomes = c()
-  x = 1
-  while(x<=maximo){
-    nomes[x] = paste("tr-",x-1, sep="")
-    x = x + 1
-    gc()
-  }
-
-  res = list()
-  totalFolds = c()
-  escolhidoFinal = c()
-  x = 1
-  while(x<=maximo){
-    res[[x]] = filter(todos, sparsification==nomes[x])
-    a = nrow(res[[x]])
-    totalFolds[x] = a
-
-    if(a==0){
-      #cat("\nNÃO TEM NADA")
-    } else {
-      setwd(parameters$Folders$folderPartitions)
-      write.csv(res[[x]], paste(nomes[x],".csv", sep=""),
-                row.names = FALSE)
-
-      setwd(parameters$Folders$folderValSilho)
-      write.csv(res[[x]], paste(nomes[x],".csv", sep=""),
-                row.names = FALSE)
-    }
-
-    if(a==10){
-      res2 = filter(res[[x]], method=="none")
-      if(nrow(res2)==0){
-        escolhidoFinal[x] = nomes[x]
-      } else {
-        #cat("\nnão dá pra usar!")
-      }
-    }
-
-    x = x + 1
-    gc()
-  }
-
-  setwd(parameters$Folders$folderPartitions)
-  write.csv(data.frame(escolhidoFinal), "escolhidos.csv")
-
-  setwd(parameters$Folders$folderValSilho)
-  write.csv(data.frame(escolhidoFinal), "escolhidos.csv")
-
-  cat("\n##############################################")
-  cat("\n# END: silho.verifying.tresholds             #")
-  cat("\n##############################################")
-
-  cat("\n")
-  gc()
-  cat("\n")
-
-  retorno$tr_valid = escolhidoFinal
-  return(retorno)
-
-}
-
-
 
 ###############################################################################
 #
@@ -161,6 +73,9 @@ silho.build.test <- function(parameters){
 
     setwd(FolderScripts)
     source("libraries.R")
+
+    setwd(FolderScripts)
+    source("misc.R")
 
 
     #######################################################################

@@ -32,59 +32,6 @@ FolderScripts = paste(FolderRoot, "/R", sep="")
 ########################################################################
 #
 ########################################################################
-label.space <- function(parameters){
-
-  retorno = list()
-
-  # return all fold label space
-  classes = list()
-
-  # from the first FOLD to the last
-  k = 1
-  while(k<=parameters$Number.Folds){
-
-    # cat("\n\tFold: ", k)
-
-    # enter folder train
-    setwd(parameters$Folders$folderCVTR)
-
-    # get the correct fold cross-validation
-    nome_arquivo = paste(dataset_name, "-Split-Tr-", k, ".csv", sep="")
-
-    # open the file
-    arquivo = data.frame(read.csv(nome_arquivo))
-
-    # split label space from input space
-    classes[[k]] = arquivo[,parameters$Dataset.Info$LabelStart:parameters$Dataset.Info$LabelEnd]
-
-    # get the names labels
-    namesLabels = c(colnames(classes[[k]]))
-
-    # increment FOLD
-    k = k + 1
-
-    # garbage collection
-    gc()
-
-  } # End While of the 10-folds
-
-  # return results
-  retorno$NamesLabels = namesLabels
-  retorno$Classes = classes
-  return(retorno)
-
-  gc()
-  cat("\n################################################################")
-  cat("\n# FUNCTION LABEL SPACE: END                                    #")
-  cat("\n################################################################")
-  cat("\n\n\n\n")
-}
-
-
-
-########################################################################
-#
-########################################################################
 silhouette <- function(parameters){
 
   f = 1
@@ -102,6 +49,9 @@ silhouette <- function(parameters){
 
     setwd(FolderScripts)
     source("utils.R")
+
+    setwd(FolderScripts)
+    source("misc.R")
 
 
     #########################################################################
@@ -399,7 +349,7 @@ silho.best.partitions <- function(parameters){
   setwd(parameters$Folders$folderReports)
   write.csv(all.silho , "all-best-silho.csv", row.names = FALSE)
 
-  n = length(parameters$valid_tr)
+  n = length(parameters$Valid.TR)
   t = 0
   while(t<n){
     res.1 = data.frame(filter(all.silho, tr==t))
@@ -436,19 +386,24 @@ silho.best.partitions <- function(parameters){
 
   f = 1
   while(f<=parameters$Number.Folds){
+
     FolderPartSplit = paste(parameters$Folders$folderPartitions,
                             "/Split-", f, sep="")
+
+    FolderCommSplit = paste(parameters$Folders$folderCommunities,
+                            "/Split-", f, sep="")
+
     setwd(FolderPartSplit)
     choosed = data.frame(read.csv(paste("fold-", f,
                                         "-tr-h-choosed.csv", sep="")))
     all.choosed.methods = rbind(all.choosed.methods, choosed)
 
-    n = length(parameters$valid_tr)
+    n = length(parameters$Valid.TR)
 
     t=0
     while(t<n){
 
-      Folder = paste(FolderPartSplit, "/Tr-", t, sep="")
+      Folder = paste(FolderCommSplit, "/Tr-", t, sep="")
       setwd(Folder)
 
       nome.eb = paste("tr-", t, "-eb-partitions-hierarchical.csv", sep="")
