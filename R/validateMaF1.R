@@ -94,7 +94,7 @@ maf1.best.partitions <- function(parameters){
                                          MaF1.Folds.Avaliados)
 
         setwd(MaF1.FolderPartition)
-        #unlink(MaF1.nome)
+        unlink(MaF1.nome)
 
         a = a + 1
         p = p + 1
@@ -229,7 +229,7 @@ maf1.best.partitions <- function(parameters){
                                          MiF1.Folds.Avaliados)
 
         setwd(MiF1.FolderPartition)
-        #unlink(MiF1.nome)
+        unlink(MiF1.nome)
 
         a = a + 1
         p = p + 1
@@ -793,9 +793,9 @@ maf1.val.gather.predicts <- function(parameters){
       y_pred = cbind(y_pred, y_pred_gr)
 
       # cat("\n\nDeleting files")
-      #unlink("y_true.csv", recursive = TRUE)
-      #unlink("y_predict.csv", recursive = TRUE)
-      #unlink("inicioFimRotulos.csv", recursive = TRUE)
+      unlink("y_true.csv", recursive = TRUE)
+      unlink("y_predict.csv", recursive = TRUE)
+      unlink("inicioFimRotulos.csv", recursive = TRUE)
 
       g = g + 1
       gc()
@@ -872,8 +872,8 @@ maf1.val.evaluate <- function(parameters){
 
     # delete files
     setwd(FolderSplit)
-    #unlink("y_true.csv", recursive = TRUE)
-    #unlink("y_predict.csv", recursive = TRUE)
+    unlink("y_true.csv", recursive = TRUE)
+    unlink("y_predict.csv", recursive = TRUE)
 
     f = f + 1
     gc()
@@ -928,7 +928,7 @@ maf1.val.gather.evaluated <- function(parameters){
     nomesFolds[f] = paste("Fold-", f, sep="")
 
     setwd(FolderSplit)
-    #unlink(str, recursive = TRUE)
+    unlink(str, recursive = TRUE)
 
     f = f + 1
     gc()

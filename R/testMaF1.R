@@ -582,9 +582,9 @@ maf1.gather.predicts <- function(parameters){
         y_pred = cbind(y_pred, y_pred_gr)
 
         #cat("\n\nDeleting files")
-        #unlink("y_true.csv", recursive = TRUE)
-        #unlink("y_predict.csv", recursive = TRUE)
-        #unlink("inicioFimRotulos.csv", recursive = TRUE)
+        unlink("y_true.csv", recursive = TRUE)
+        unlink("y_predict.csv", recursive = TRUE)
+        unlink("inicioFimRotulos.csv", recursive = TRUE)
 
         g = g + 1
         gc()
@@ -712,8 +712,8 @@ maf1.evaluate.test <- function(parameters){
 
       #cat("\nDelete files")
       setwd(FolderTr)
-      #unlink("y_true.csv", recursive = TRUE)
-      #unlink("y_predict.csv", recursive = TRUE)
+      unlink("y_true.csv", recursive = TRUE)
+      unlink("y_predict.csv", recursive = TRUE)
 
       k = k + 1
       gc()
@@ -810,7 +810,7 @@ maf1.gather.evaluation <- function(parameters){
       avaliadoTr = cbind(avaliadoTr, avaliado[,2])
       nomesThreshold[k] = paste("Fold-", f, "-Tr-", k, sep="")
       #names(avaliadoTr)[k+2] = nomesThreshold[k]
-      #unlink(str, recursive = TRUE)
+      unlink(str, recursive = TRUE)
 
       k = k + 1
       gc()
@@ -879,7 +879,7 @@ maf1.organize.evaluation <- function(parameters){
     str = paste("Evaluated-Fold-", f, ".csv", sep="")
     dfs2[[f]] = data.frame(read.csv(str))
 
-    #unlink(str, recursive = TRUE)
+    unlink(str, recursive = TRUE)
 
     f = f + 1
     gc()

@@ -113,23 +113,23 @@ execute <- function(parameters){
       parameters$bests = resBest
 
 
-      cat("\n\n#######################################################")
-      cat("\n# RUN: COPY VALIDATION TO GOOGLE DRIVE                     #")
-      cat("\n#########################################################\n\n")
-      origem1 = parameters$Folders$folderValSilho
-      destino1 = paste("nuvem:Clus/Communities/Test/",
-                       similarity, "/Silhouette/", dataset_name,
-                       "/Tr-H/Validation", sep="")
-      comando1 = paste("rclone copy ", origem1, " ",
-                       destino1, sep="")
-      cat("\n\n\n", comando1, "\n\n\n")
-      a = print(system(comando1))
-      a = as.numeric(a)
-      if(a != 0){
-        stop("Erro RCLONE")
-        quit("yes")
-      }
-      cat("\n\n")
+      # cat("\n\n#######################################################")
+      # cat("\n# RUN: COPY VALIDATION TO GOOGLE DRIVE                     #")
+      # cat("\n#########################################################\n\n")
+      # origem1 = parameters$Folders$folderValSilho
+      # destino1 = paste("nuvem:Clus/Communities/Test/",
+      #                  similarity, "/Silhouette/", dataset_name,
+      #                  "/Tr-H/Validation", sep="")
+      # comando1 = paste("rclone copy ", origem1, " ",
+      #                  destino1, sep="")
+      # cat("\n\n\n", comando1, "\n\n\n")
+      # a = print(system(comando1))
+      # a = as.numeric(a)
+      # if(a != 0){
+      #   stop("Erro RCLONE")
+      #   quit("yes")
+      # }
+      # cat("\n\n")
 
 
       cat("\n\n#######################################################")
@@ -156,6 +156,17 @@ execute <- function(parameters){
       write.csv(Runtime, paste(dataset_name,
                                "-test-Runtime.csv", sep=""),
                 row.names = FALSE)
+
+      str = paste(parameters$Folders$folderRepSilho, "/",
+                  parameters$Dataset.Name, sep="")
+      if(dir.exists(str)==FALSE){dir.create(str)}
+
+      str2 = paste("cp -r ", parameters$Folders$folderValSilho, " ", str, sep="")
+      print(system(str2))
+
+      str2 = paste("cp -r ", parameters$Folders$folderReports , "/* ", str , sep="")
+      print(system(str2))
+
 
 
 
@@ -185,23 +196,23 @@ execute <- function(parameters){
       timeBest = system.time(resTHP <- maf1.best.partitions(parameters))
 
 
-      cat("\n\n#############################################################")
-      cat("\n# RUN: RUN COPY VALIDATION TO GOOGLE DRIVE                       #")
-      cat("\n#############################################################\n\n")
-      origem1 = parameters$Folders$folderValMaF1
-      destino1 = paste("nuvem:Clus/Communities/Test/",
-                       similarity, "/Macro-F1/", dataset_name,
-                       "/Tr-H/Validation", sep="")
-      comando1 = paste("rclone copy ", origem1, " ",
-                       destino1, sep="")
-      cat("\n\n\n", comando1, "\n\n\n")
-      a = print(system(comando1))
-      a = as.numeric(a)
-      if(a != 0){
-        stop("Erro RCLONE")
-        quit("yes")
-      }
-      cat("\n\n")
+      # cat("\n\n#############################################################")
+      # cat("\n# RUN: RUN COPY VALIDATION TO GOOGLE DRIVE                       #")
+      # cat("\n#############################################################\n\n")
+      # origem1 = parameters$Folders$folderValMaF1
+      # destino1 = paste("nuvem:Clus/Communities/Test/",
+      #                  similarity, "/Macro-F1/", dataset_name,
+      #                  "/Tr-H/Validation", sep="")
+      # comando1 = paste("rclone copy ", origem1, " ",
+      #                  destino1, sep="")
+      # cat("\n\n\n", comando1, "\n\n\n")
+      # a = print(system(comando1))
+      # a = as.numeric(a)
+      # if(a != 0){
+      #   stop("Erro RCLONE")
+      #   quit("yes")
+      # }
+      # cat("\n\n")
 
 
       cat("\n\n#############################################################")
@@ -229,6 +240,18 @@ execute <- function(parameters){
       write.csv(Runtime, paste(dataset_name,
                                "-test-Runtime.csv", sep=""),
                 row.names = FALSE)
+
+
+      str = paste(parameters$Folders$folderRepMaF1, "/",
+                  parameters$Dataset.Name, sep="")
+      if(dir.exists(str)==FALSE){dir.create(str)}
+
+      str2 = paste("cp -r ", parameters$Folders$folderValMaF1, " ", str, sep="")
+      print(system(str2))
+
+      str2 = paste("cp -r ", parameters$Folders$folderReports , "/* ", str , sep="")
+      print(system(str2))
+
 
     } else {
 
