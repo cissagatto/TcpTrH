@@ -827,8 +827,8 @@ maf1.val.gather.predicts <- function(parameters){
 maf1.val.evaluate <- function(parameters){
 
   f = 1
-  #evalParal <- foreach(f = 1:parameters$Number.Folds) %dopar%{
-  while(f<=parameters$Number.Folds){
+  evalParal <- foreach(f = 1:parameters$Number.Folds) %dopar%{
+  #while(f<=parameters$Number.Folds){
 
     cat("\n#====================================================#")
     cat("\n# FOLD ", f, "                                       #")
@@ -875,7 +875,7 @@ maf1.val.evaluate <- function(parameters){
     unlink("y_true.csv", recursive = TRUE)
     unlink("y_predict.csv", recursive = TRUE)
 
-    f = f + 1
+    # f = f + 1
     gc()
   } # end folds
 

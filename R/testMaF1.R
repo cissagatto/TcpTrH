@@ -59,8 +59,8 @@ maf1.build.data.frame <- function(){
 maf1.build.test <- function(parameters){
 
   f = 1
-  #buildParalel <- foreach(f = 1:parameters$Number.Folds) %dopar%{
-  while(f<=parameters$Number.Folds){
+  buildParalel <- foreach(f = 1:parameters$Number.Folds) %dopar%{
+  # while(f<=parameters$Number.Folds){
 
     cat("\n#=========================================================")
     cat("\n# Fold: ", f)
@@ -459,7 +459,7 @@ maf1.build.test <- function(parameters){
       gc()
     } # end Tr
 
-    f = f + 1
+    # f = f + 1
     gc()
   } # fim do for each
 
@@ -937,7 +937,7 @@ maf1.organize.evaluation <- function(parameters){
     } # fim do fold
 
     resultado = data.frame(resultado[,-2])
-    setwd(parameters$Folders$folderTestMaF1)
+    setwd(parameters$Folders$folderReports)
     write.csv(resultado, nomeTr1, row.names = FALSE)
 
     # calculando a média dos 10 folds para cada medida

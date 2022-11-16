@@ -903,7 +903,7 @@ silho.organize.evaluation <- function(parameters){
 
     resultado = data.frame(resultado[,-2])
     colnames(resultado) = c("measures", nomes)
-    setwd(parameters$Folders$folderTestSilho)
+    setwd(parameters$Folders$folderReports)
     write.csv(resultado, nometr1, row.names = FALSE)
 
     # calculando a média dos 10 folds para cada medida
