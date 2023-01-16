@@ -48,13 +48,13 @@ A file called _datasets-original.csv_ must be in the *root project folder*. This
 ** [Click here](https://link.springer.com/book/10.1007/978-3-319-41111-8) to get explanation about each property.
 
 
-## STEP 2
+### STEP 2
 To run this experiment you need the _X-Fold Cross-Validation_ files and they must be compacted in **tar.gz** format. You can download these files, with 10-folds, ready for multiple multilabel dataset by clicking [here](https://1drv.ms/u/s!Aq6SGcf6js1mrZJSfd6FpToCtGVqJw?e=H0pwK5). For a new dataset, in addition to including it in the **datasets-original.csv** file, you must also run this code [here](https://github.com/cissagatto/crossvalidationmultilabel). In the repository in question you will find all the instructions needed to generate the files in the format required for this experiment. The **tar.gz** file can be placed on any folder on your computer or cluster. The absolute path of the file should be passed as a parameter in the configuration file that will be read by **tcp.R** script. The dataset will be loaded from there. 
 
-## STEP 3
+### STEP 3
 You need to have installed all the R packages required to execute this code on your machine. Check out which are needed in the file *libraries.R*. This code does not provide any type of automatic package installation!
 
-## STEP 4
+### STEP 4
 You can use the Conda environment that I created to perform this experiment. Below are the links to download the files.
 
 | [download txt](https://www.4shared.com/s/fUCVTl13zea) | [download yml](https://www.4shared.com/s/f8nOZyxj9iq) | [download yaml](https://www.4shared.com/s/fk5Io4faLiq) |
